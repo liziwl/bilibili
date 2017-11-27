@@ -16,11 +16,11 @@
 - [x] up主（视频上传者）粉丝数。
 
 ## 运行环境
-    * Python3
-    * PyCharm
+* Python3
+* PyCharm
     
 ### 第三方包
-    * lxml
+* lxml
     
 ## 调用的API
 1. 基本信息
