@@ -11,7 +11,7 @@ import re
 # 不要轻易改小sleep数值，否则会被封IP。
 # 有些视频需要登陆才能查看，所以在basic_info里播放量会为"--"。
 
-basic_header = ["aid", "view", "danmaku", "reply", "favorite", "coin", "share","tag_attention"]
+basic_header = ["aid", "view", "danmaku", "reply", "favorite", "coin", "share", "tag_attention"]
 detail_header = ["aid", "title", "category", "date", "duration", "upid"]
 up_header = ["mid", "name", "fans", "video"]
 
@@ -45,14 +45,14 @@ def basic_info(url):
     req = requests.get(url, headers=headers, timeout=6).json()
     ti.sleep(1)  # 延迟，避免太快 ip 被封
     av = url.replace("http://api.bilibili.com/archive_stat/stat?aid=", "")
-    tag_url = "https://api.bilibili.com/x/tag/archive/tags?aid="+str(av)
+    tag_url = "https://api.bilibili.com/x/tag/archive/tags?aid=" + str(av)
     tag_req = requests.get(tag_url, headers=headers, timeout=6).json()
     try:
         data = req['data']
         total_tag_atten = 0
         tag_data = tag_req['data']
-        for i in range(0,len(tag_data)):
-            total_tag_atten+=tag_data[i]['count']['atten']
+        for i in range(0, len(tag_data)):
+            total_tag_atten += tag_data[i]['count']['atten']
 
         video = Video(
             data['aid'],  # 视频编号
@@ -62,7 +62,7 @@ def basic_info(url):
             data['favorite'],  # 收藏数
             data['coin'],  # 硬币数
             data['share'],  # 分享数
-            total_tag_atten # 标签总关注数
+            total_tag_atten  # 标签总关注数
         )
 
         with lock:
@@ -185,8 +185,8 @@ def save(file_name, header, result):
         f_csv.writerows(result)
 
 
-def generate_url(to_num, size):
-    ra = random.sample(range(1, to_num), size)
+def generate_url(from_num, to_num, size):
+    ra = random.sample(range(from_num, to_num), size)
     out = []
     out_detail = []
     for i in ra:
@@ -222,7 +222,7 @@ if __name__ == "__main__":
     # 第一次运行这一部分，随机采样数据，生成2个csv文件。
     # ------------------------------------------------
 
-    # urls, detail_url = generate_url(17000000, 4000)
+    # urls, detail_url = generate_url(14035440, 14950778, 4000)
     # with futures.ThreadPoolExecutor(32) as executor:
     #     executor.map(basic_info, urls)
     # print(result)
@@ -239,7 +239,7 @@ if __name__ == "__main__":
 
     # mid = get_mid("detail_info.csv")
     # mid_url = generate_mid_url(mid)
-
+    #
     # with futures.ThreadPoolExecutor(32) as executor:
     #     executor.map(up_info, mid_url)
     # print(up_result)
